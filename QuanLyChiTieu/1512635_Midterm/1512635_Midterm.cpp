@@ -184,7 +184,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		hwnd = CreateWindowEx(0, L"STATIC", L"Thêm dữ liệu chi tiêu trong ngày", WS_CHILD | WS_VISIBLE | SS_LEFT, 185, 17, 220, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		
-		
+		hwnd = CreateWindowEx(0, L"BUTTON", L"Tư vấn", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 235, 115, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		break;
 	}
     case WM_COMMAND:
@@ -210,7 +211,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             HDC hdc = BeginPaint(hWnd, &ps);
 			SetDCBrushColor(hdc, RGB(240, 240, 240));
 			SelectObject(hdc, GetStockObject(DC_BRUSH));
-			Rectangle(hdc, 25, 25, 570, 145);
+			Rectangle(hdc, 25, 25, 570, 170);
             EndPaint(hWnd, &ps);
         }
         break;
