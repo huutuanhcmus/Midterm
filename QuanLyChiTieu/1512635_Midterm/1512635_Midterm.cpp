@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "1512635_Midterm.h"
-
+#include<cmath>
 #define MAX_LOADSTRING 100
 
 // Global Variables:
@@ -98,7 +98,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Store instance handle in our global variable
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, 0, 1220, 700, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -156,6 +156,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HBRUSH brush = CreateSolidBrush(RGB(240, 240, 240));
 		SetClassLongPtr(hWnd, GCLP_HBRBACKGROUND, (LONG)brush);
 
+
+		//////////////////////////////////////////Input data
 		//Group combobox
 		HWND cmbChoice = CreateWindow(L"combobox", L"", WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST
 			, 50, 75, 125, 15, hWnd, (HMENU)ID_CMBCHOICE, hInst, NULL);
@@ -181,12 +183,58 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HWND SoTien = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER, 425, 75, 120, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(SoTien, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		
-		hwnd = CreateWindowEx(0, L"STATIC", L"Thêm dữ liệu chi tiêu trong ngày", WS_CHILD | WS_VISIBLE | SS_LEFT, 185, 17, 220, 15, hWnd, NULL, hInst, NULL);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Thêm dữ liệu chi tiêu trong ngày", WS_CHILD | WS_VISIBLE | SS_LEFT, 180, 17, 220, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		
 		hwnd = CreateWindowEx(0, L"BUTTON", L"Tư vấn", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 235, 115, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+
+		/////////////////////////////////////Show data
+		///////////////Tạo List view
+		HWND hList = CreateWindow(WC_LISTVIEW, L"ListView", WS_CHILD | WS_VISIBLE |
+			WS_BORDER | LVS_REPORT | LVS_REPORT | LVS_SINGLESEL | LVS_ICON | WS_VSCROLL
+			, 650,50, 500, 230, hWnd, (HMENU)IDC_LISTSHOWDATA, hInst, NULL);
+		SendMessage(hList, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		LVCOLUMN col;
+		col.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
+		col.fmt = LVCFMT_LEFT;
+		col.pszText = L"Loại chi tiêu";
+		col.cx = 150;
+		ListView_InsertColumn(hList, 0, &col);
+		col.pszText = L"Nội dung";
+		col.cx = 200;
+		ListView_InsertColumn(hList, 1, &col);
+		col.pszText = L"Số tiền";
+		col.cx = 150;
+		ListView_InsertColumn(hList, 2, &col);
+
+		hwnd = CreateWindowEx(0, L"STATIC", L"Tổng chi tiêu:", WS_CHILD | WS_VISIBLE | SS_LEFT, 900, 290, 100, 20, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		HWND TongChiTieu = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER, 1000, 288, 150, 20, hWnd, NULL, hInst, NULL);
+		SendMessage(TongChiTieu, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Danh sách đã chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 832, 17, 150, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+
+		//Biểu đồ tròn
+		hwnd = CreateWindowEx(0, L"STATIC", L"Biểu đồ thể hiện tỉ lệ chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 655, 610, 200, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Chú thích:", WS_CHILD | WS_VISIBLE | SS_LEFT, 950, 390, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Ăn uống", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 430, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Di chuyển", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 465, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Nhà cửa", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 500, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Xe cộ", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 535, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Nhu yếu phẩm", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 570, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Dịch vụ", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 605, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		break;
+
+
 	}
     case WM_COMMAND:
         {
@@ -212,7 +260,35 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			SetDCBrushColor(hdc, RGB(240, 240, 240));
 			SelectObject(hdc, GetStockObject(DC_BRUSH));
 			Rectangle(hdc, 25, 25, 570, 170);
+			Rectangle(hdc, 625, 25, 1175, 330);
+
+			//Biểu đồ tròn
+			SetDCBrushColor(hdc, RGB(0, 0, 0));
+			Pie(hdc, 653, 400,853, 600, 853, 500, 790, 450); SetDCBrushColor(hdc, RGB(0, 0, 0));
+			SetDCBrushColor(hdc, RGB(100, 100, 100));
+			Pie(hdc, 653, 400, 853, 600, 790, 550, 853, 500);
+			//Cột 1
+			SetDCBrushColor(hdc, RGB(223, 0, 41));
+			Pie(hdc, 900, 400, 1000, 500, 950, 450, 993, 425);
+			//Cột 2
+			SetDCBrushColor(hdc, RGB(91, 189, 43));
+			Pie(hdc, 900, 435, 1000, 535, 950, 485, 993, 460);
+			//Cột 3
+			SetDCBrushColor(hdc, RGB(0, 178, 191));
+			Pie(hdc, 900, 470, 1000, 570, 950, 520, 993, 495);
+			//Cột 4
+			SetDCBrushColor(hdc, RGB(252, 245, 76));
+			Pie(hdc, 900, 505, 1000, 605, 950, 555, 993, 530);
+			//Cột 5
+			SetDCBrushColor(hdc, RGB(121, 55, 139));
+			Pie(hdc, 900, 540, 1000, 640, 950, 590, 993, 565);
+			//Cột 6
+			SetDCBrushColor(hdc, RGB(162, 0, 124));
+			Pie(hdc, 900, 575, 1000, 675, 950, 625, 993, 600);
             EndPaint(hWnd, &ps);
+
+			
+
         }
         break;
     case WM_DESTROY:
