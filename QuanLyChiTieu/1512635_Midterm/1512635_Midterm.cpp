@@ -133,6 +133,17 @@ HWND SoTien;
 HWND Ngay;
 HWND Thang;
 HWND Nam;
+
+HWND SoTienThu;
+HWND NgayB;
+HWND ThangB;
+HWND NamB;
+
+HWND cmbChoice_Loai;
+HWND NgayA;
+HWND ThangA;
+HWND NamA;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -269,17 +280,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Ngày", WS_CHILD | WS_VISIBLE | SS_LEFT, 100, 257, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND NgayA = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 150, 255, 23, 20, hWnd, NULL, hInst, NULL);
+		NgayA = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 150, 255, 23, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Tháng", WS_CHILD | WS_VISIBLE | SS_LEFT, 223, 257, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND ThangA = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 290, 255, 23, 20, hWnd, NULL, hInst, NULL);
+		ThangA = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 290, 255, 23, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Năm", WS_CHILD | WS_VISIBLE | SS_LEFT, 385, 257, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND NamA = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 438, 255, 40, 20, hWnd, NULL, hInst, NULL);
+		NamA = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 438, 255, 40, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND cmbChoice_Loai = CreateWindow(L"combobox", L"", WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST
+		cmbChoice_Loai = CreateWindow(L"combobox", L"", WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST
 			, 240, 298, 170, 15, hWnd, (HMENU)ID_CMBCHOICE_LOAI, hInst, NULL);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Xem theo", WS_CHILD | WS_VISIBLE | SS_LEFT, 170, 298, 70, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
@@ -287,7 +298,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SendMessage(cmbChoice_Loai, CB_ADDSTRING, NULL, (LPARAM)L"Ngày - Tháng - Năm");
 		SendMessage(cmbChoice_Loai, CB_ADDSTRING, NULL, (LPARAM)L"Tháng - Năm");
 		SendMessage(cmbChoice_Loai, CB_ADDSTRING, NULL, (LPARAM)L"Năm");
-		hwnd = CreateWindowEx(0, L"BUTTON", L"Xem", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 335, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT, hInst, NULL);
+		hwnd = CreateWindowEx(0, L"BUTTON", L"Xem", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 335, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT_XEM, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 
 		//Group Thu nhập
@@ -295,21 +306,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Số tiền thu nhập", WS_CHILD | WS_VISIBLE | SS_LEFT, 50, 440, 150, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND SoTienThu = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER, 178, 440, 120, 20, hWnd, NULL, hInst, NULL);
+		SoTienThu = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER, 178, 440, 120, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(SoTienThu, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Ngày", WS_CHILD | WS_VISIBLE | SS_LEFT, 100, 480, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND NgayB = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 150, 480, 23, 20, hWnd, NULL, hInst, NULL);
+		NgayB = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 150, 480, 23, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Tháng", WS_CHILD | WS_VISIBLE | SS_LEFT, 223, 480, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND ThangB = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 290, 480, 23, 20, hWnd, NULL, hInst, NULL);
+		ThangB = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 290, 480, 23, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Năm", WS_CHILD | WS_VISIBLE | SS_LEFT, 385, 480, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND NamB = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 438, 480, 40, 20, hWnd, NULL, hInst, NULL);
+		NamB = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 438, 480, 40, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		hwnd = CreateWindowEx(0, L"BUTTON", L"Thêm vào", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 510, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT, hInst, NULL);
+		hwnd = CreateWindowEx(0, L"BUTTON", L"Thêm vào", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 510, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT_THU, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		////Group combobox
 		//HWND cmb = CreateWindow(L"combobox", L"", WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST
@@ -373,13 +384,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				string str_SoTien(ws_SoTien.begin(), ws_SoTien.end());
 				fstream file;
 				
-				string temp = "data/" + str_nam + "/" + str_thang + "/" + str_ngay + ".txt";
+				string temp = "data/" + str_nam + "/" + str_thang + "/" + "CHI_" + str_ngay + ".txt";
 				file.open(temp , ios::app);
 				if (!file.good()) {
 					string address = "data/" + str_nam + "/" + str_thang;
 					string str = "mkdir \"" + address + "\"";
 					system(str.c_str());
-					address += "/" + str_ngay + ".txt";
+					address += "/CHI_"  + str_ngay + ".txt";
 					file.open(address, ios::app);
 					if (!file.good()) {
 						MessageBox(0, L"Không thể thêm dữ liệu!", L"Thông báo", 0);
@@ -410,6 +421,112 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				GetWindowText(NoiDung, content, szcontent + 1);
 				if (content == L"")
 					MessageBox(0, content, 0, 0);*/
+				break;
+			}
+			case IDC_BUTTON_INPUT_XEM:
+			{
+				WCHAR* ngayA;
+				WCHAR* thangA;
+				WCHAR* namA;
+				int length_cmbChoice_Loai = GetWindowTextLength(cmbChoice_Loai);
+				int length_NgayA = GetWindowTextLength(NgayA);
+				int length_ThangA = GetWindowTextLength(ThangA);
+				int length_NamA = GetWindowTextLength(NamA);
+				if (length_cmbChoice_Loai == 0) {
+					MessageBox(0, L"Vui lòng nhập đầy đủ thông tin chi tiêu!", L"Thông báo", 0);
+					break;
+				}
+				int ItemIndex = SendMessage(cmbChoice_Loai, (UINT)CB_GETCURSEL, (WPARAM)0, (LPARAM)0);
+				if (ItemIndex == 0) {
+					if (length_NgayA == 0 || length_ThangA == 0 || length_NamA == 0) {
+						MessageBox(0, L"Vui lòng nhập đầy đủ thông tin chi tiêu!", L"Thông báo", 0);
+						break;
+					}
+					ngayA = new WCHAR[length_NgayA + 1];
+					thangA = new WCHAR[length_ThangA + 1];
+					namA = new WCHAR[length_NamA + 1];
+					GetWindowText(NgayA, ngayA, length_NgayA + 1);
+					GetWindowText(ThangA, thangA, length_ThangA + 1);
+					GetWindowText(NamA, namA, length_NamA + 1);
+					if (!isTrueDay(ngayA, thangA, namA)) {
+						MessageBox(0, L"Vui lòng nhập chính xác ngày - tháng - năm!", L"Thông báo", 0);
+						break;
+					}
+
+				}
+				else if (ItemIndex == 1) {
+					if (length_ThangA == 0 || length_NamA == 0) {
+						MessageBox(0, L"Vui lòng nhập đầy đủ thông tin chi tiêu!", L"Thông báo", 0);
+						break;
+					}
+					thangA = new WCHAR[length_ThangA + 1];
+					namA = new WCHAR[length_NamA + 1];
+					GetWindowText(ThangA, thangA, length_ThangA + 1);
+					GetWindowText(NamA, namA, length_NamA + 1);
+					if (!isTrueDay(L"1", thangA, namA)) {
+						MessageBox(0, L"Vui lòng nhập chính xác tháng - năm!", L"Thông báo", 0);
+						break;
+					}
+				}
+				else {
+					if (length_NamA == 0) {
+						MessageBox(0, L"Vui lòng nhập đầy đủ thông tin chi tiêu!", L"Thông báo", 0);
+						break;
+					}
+					namA = new WCHAR[length_NamA + 1];
+					GetWindowText(NamA, namA, length_NamA + 1);
+				}
+
+				break;
+			}
+			case IDC_BUTTON_INPUT_THU:
+			{
+				int length_SoTienThu = GetWindowTextLength(SoTienThu);
+				int length_NgayB = GetWindowTextLength(NgayB);
+				int length_ThangB = GetWindowTextLength(ThangB);
+				int length_NamB = GetWindowTextLength(NamB);
+				if (length_SoTienThu == 0 || length_NgayB == 0 || length_ThangB == 0 || length_NamB == 0) {
+					MessageBox(0, L"Vui lòng nhập đầy đủ thông tin chi tiêu!", L"Thông báo", 0);
+					break;
+				}
+				WCHAR* ngayB = new WCHAR[length_NgayB + 1];
+				WCHAR* thangB = new WCHAR[length_ThangB + 1];
+				WCHAR* namB = new WCHAR[length_NamB + 1];
+				GetWindowText(NgayB, ngayB, length_NgayB + 1);
+				GetWindowText(ThangB, thangB, length_ThangB + 1);
+				GetWindowText(NamB, namB, length_NamB + 1);
+				if (!isTrueDay(ngayB, thangB, namB)) {
+					MessageBox(0, L"Vui lòng nhập chính xác ngày - tháng - năm!", L"Thông báo", 0);
+					break;
+				}
+				wstring ws_namB(namB);
+				wstring ws_thangB(thangB);
+				wstring ws_ngayB(ngayB);
+				string str_namB(ws_namB.begin(), ws_namB.end());
+				string str_thangB(ws_thangB.begin(), ws_thangB.end());
+				string str_ngayB(ws_ngayB.begin(), ws_ngayB.end());
+				WCHAR* content_SoTienThu = new WCHAR[length_SoTienThu + 1];
+				GetWindowText(SoTienThu, content_SoTienThu, length_SoTienThu + 1);
+				wstring ws_SoTienThu(content_SoTienThu);
+				string str_SoTienThu(ws_SoTienThu.begin(), ws_SoTienThu.end());
+				fstream file;
+
+				string temp = "data/" + str_namB + "/" + str_thangB + "/" + "THU_" + str_ngayB + ".txt";
+				file.open(temp, ios::app);
+				if (!file.good()) {
+					string address = "data/" + str_namB + "/" + str_thangB;
+					string str = "mkdir \"" + address + "\"";
+					system(str.c_str());
+					address += "/THU_" + str_ngayB + ".txt";
+					file.open(address, ios::app);
+					if (!file.good()) {
+						MessageBox(0, L"Không thể thêm dữ liệu!", L"Thông báo", 0);
+						break;
+					}
+				}
+				file << str_SoTienThu << '\n';
+				file.close();
+				MessageBox(0, L"Thêm dữ liệu thành công!", L"Thông báo", 0);
 				break;
 			}
             case IDM_ABOUT:
