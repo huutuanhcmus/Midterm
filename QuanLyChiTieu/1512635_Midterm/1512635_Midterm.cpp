@@ -475,6 +475,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					for (int i = 1; i <= lengthDay(_wtoi(thangA), _wtoi(namA)); i++) {
 						wstring value = to_wstring(i);
 						const WCHAR* ngayTemp = value.c_str();
+						if (!isHave((WCHAR*)ngayTemp, thangA, namA))
+							continue;
 						LVITEM m;
 						m.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM;
 						m.iSubItem = 0;
@@ -500,6 +502,41 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					}
 					namA = new WCHAR[length_NamA + 1];
 					GetWindowText(NamA, namA, length_NamA + 1);
+					int pos = 0;
+					for (int i = 1; i <= 12; i++) {
+						wstring value = to_wstring(i);
+						const WCHAR* thangTemp = value.c_str();
+						LVITEM m;
+						m.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM;
+						m.iSubItem = 0;
+						m.pszText = L"";
+						m.iImage = 0;
+						m.lParam = (LPARAM)L"Test";
+						m.cchTextMax = 2;
+						m.iItem = pos;
+						ListView_InsertItem(hList, &m);
+						WCHAR* folder = new WCHAR[20];
+						wsprintf(folder, L"Tháng %s", thangTemp);
+						ListView_SetItemText(hList, pos, 0, L"OOOOOOOOOOOO");
+						ListView_SetItemText(hList, pos, 2, L"OOOOOOOOOOOO");
+						ListView_SetItemText(hList, pos, 1, folder);
+						pos++;
+						for (int j = 1; j < lengthDay(i, _wtoi(namA)); j++) {
+							wstring value1 = to_wstring(j);
+							const WCHAR* ngayTemp = value1.c_str();
+							if (!isHave((WCHAR*)ngayTemp, (WCHAR*)thangTemp, namA))
+								continue;
+							m.iItem = pos;
+							ListView_InsertItem(hList, &m);
+							WCHAR* folder1 = new WCHAR[20];
+							wsprintf(folder1, L"Ngày %s", ngayTemp);
+							ListView_SetItemText(hList, pos, 0, L"****************");
+							ListView_SetItemText(hList, pos, 2, L"****************");
+							ListView_SetItemText(hList, pos, 1, folder1);
+							pos++;
+							OutputData(hList, (WCHAR*)ngayTemp, (WCHAR*)thangTemp, namA, pos);
+						}
+					}
 				}
 				
 				break;
@@ -720,6 +757,7 @@ bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos){
 			ListView_SetItemText(hWnd1, pos, 2, (WCHAR*)result);
 			pos++;
 		}
+		fileThu.close();
 	}
 	if (fileChi.good()) {
 		while (!fileChi.eof()) {
@@ -747,23 +785,29 @@ bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos){
 			m.cchTextMax = 2;
 			m.iItem = pos;
 			ListView_InsertItem(hList, &m);
-			if (loai == "0") 
+			if (loai == "0") {
 				ListView_SetItemText(hWnd1, pos, 0, L"Ăn uống");
-			if (loai == "1")
+			}
+			else if (loai == "1") {
 				ListView_SetItemText(hWnd1, pos, 0, L"Di chuyển");
-			if (loai == "2")
+			}
+			else if (loai == "2") {
 				ListView_SetItemText(hWnd1, pos, 0, L"Nhà cửa");
-			if (loai == "3")
+			}
+			else if (loai == "3") {
 				ListView_SetItemText(hWnd1, pos, 0, L"Xe cộ");
-			if (loai == "4")
+			}
+			else if (loai == "4") {
 				ListView_SetItemText(hWnd1, pos, 0, L"Nhu yếu phẩm");
-			if (loai == "5")
+			}
+			else if (loai == "5") {
 				ListView_SetItemText(hWnd1, pos, 0, L"Dịch vụ");
+			}
 			ListView_SetItemText(hWnd1, pos, 1, (WCHAR*)result2);
 			ListView_SetItemText(hWnd1, pos, 2, (WCHAR*)result3);
 			pos++;
 		}
-
+		fileChi.close();
 	}
 }
 
@@ -790,4 +834,24 @@ int lengthDay(int thang, int nam) {
 	default:
 		return 0;
 	}
+}
+
+bool isHave(WCHAR *ngay, WCHAR *thang, WCHAR *nam){
+	wstring ws_nam(nam);
+	wstring ws_thang(thang);
+	wstring ws_ngay(ngay);
+	string str_nam(ws_nam.begin(), ws_nam.end());
+	string str_thang(ws_thang.begin(), ws_thang.end());
+	string str_ngay(ws_ngay.begin(), ws_ngay.end());
+	fstream fileThu, fileChi;
+	fileThu.open("data/" + str_nam + "/" + str_thang + "/" + "THU_" + str_ngay + ".txt", ios::in);
+	fileChi.open("data/" + str_nam + "/" + str_thang + "/" + "CHI_" + str_ngay + ".txt", ios::in);
+	if (!(fileThu.good() || fileChi.good())) {
+		return false;
+	}
+	if (fileThu.good())
+		fileThu.close();
+	if (fileChi.good())
+		fileChi.close();
+	return true;
 }

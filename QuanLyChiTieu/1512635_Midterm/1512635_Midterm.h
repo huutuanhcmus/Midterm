@@ -9,3 +9,4 @@
 bool isTrueDay(WCHAR* ngay, WCHAR* thang, WCHAR* nam);
 bool OutputData(HWND &hWnd, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos);
 int lengthDay(int thang, int nam);
+bool isHave(WCHAR *ngay, WCHAR *thang, WCHAR *nam);
