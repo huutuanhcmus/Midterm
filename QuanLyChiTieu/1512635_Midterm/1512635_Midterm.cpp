@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "1512635_Midterm.h"
 #include<cmath>
+#include<Windowsx.h>
 #define MAX_LOADSTRING 100
 
 // Global Variables:
@@ -216,6 +217,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 
 		//Biểu đồ tròn
+		hwnd = CreateWindowEx(0, L"STATIC", L"Biểu đồ", WS_CHILD | WS_VISIBLE | SS_LEFT, 880, 357, 54, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Biểu đồ thể hiện tỉ lệ chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 655, 610, 200, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Chú thích:", WS_CHILD | WS_VISIBLE | SS_LEFT, 950, 390, 100, 15, hWnd, NULL, hInst, NULL);
@@ -232,6 +235,42 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Dịch vụ", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 605, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+
+		//////////////////////////////////////////Ngày tháng năm
+		hwnd = CreateWindowEx(0, L"STATIC", L"Xem danh sách chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 220, 192, 160, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Ngày", WS_CHILD | WS_VISIBLE | SS_LEFT, 100, 227, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		HWND Ngay = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 150, 225, 23, 20, hWnd, NULL, hInst, NULL);
+		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Tháng", WS_CHILD | WS_VISIBLE | SS_LEFT, 223, 227, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		HWND Thang = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 290, 225, 23, 20, hWnd, NULL, hInst, NULL);
+		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Năm", WS_CHILD | WS_VISIBLE | SS_LEFT, 385, 227, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		HWND Nam = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 438, 225, 40, 20, hWnd, NULL, hInst, NULL);
+		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		HWND cmbChoice_Loai = CreateWindow(L"combobox", L"", WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST
+			, 170, 264, 150, 15, hWnd, (HMENU)ID_CMBCHOICE_LOAI, hInst, NULL);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Xem theo", WS_CHILD | WS_VISIBLE | SS_LEFT, 100, 268, 70, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		SendMessage(cmbChoice_Loai, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		SendMessage(cmbChoice_Loai, CB_ADDSTRING, NULL, (LPARAM)L"Ngày - Tháng - Năm");
+		SendMessage(cmbChoice_Loai, CB_ADDSTRING, NULL, (LPARAM)L"Tháng - Năm");
+		SendMessage(cmbChoice_Loai, CB_ADDSTRING, NULL, (LPARAM)L"Năm");
+		////Group combobox
+		//HWND cmb = CreateWindow(L"combobox", L"", WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST
+		//	, 50, 75, 125, 15, hWnd, (HMENU)ID_CMBCHOICE, hInst, NULL);
+		//hwnd = CreateWindowEx(0, L"STATIC", L"Loại chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 50, 50, 100, 15, hWnd, NULL, hInst, NULL);
+		//SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		//SendMessage(cmbChoice, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		//SendMessage(cmbChoice, CB_ADDSTRING, NULL, (LPARAM)L"Ăn uống");
+		//SendMessage(cmbChoice, CB_ADDSTRING, NULL, (LPARAM)L"Di chuyển");
+		//SendMessage(cmbChoice, CB_ADDSTRING, NULL, (LPARAM)L"Nhà cửa");
+		//SendMessage(cmbChoice, CB_ADDSTRING, NULL, (LPARAM)L"Xe cộ");
+		//SendMessage(cmbChoice, CB_ADDSTRING, NULL, (LPARAM)L"Nhu yếu phẩm");
+		//SendMessage(cmbChoice, CB_ADDSTRING, NULL, (LPARAM)L"Dịch vụ");
 		break;
 
 
@@ -253,6 +292,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+	case WM_MOUSEMOVE:
+	{
+		int x = GET_X_LPARAM(lParam);
+		int y = GET_Y_LPARAM(lParam);
+		WCHAR buffer[200];
+		wsprintf(buffer, L"%d, %d", x, y);
+		SetWindowText(hWnd, buffer);
+		break;
+	}
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
@@ -261,7 +309,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			SelectObject(hdc, GetStockObject(DC_BRUSH));
 			Rectangle(hdc, 25, 25, 570, 170);
 			Rectangle(hdc, 625, 25, 1175, 330);
-
+			Rectangle(hdc, 625, 365, 1175, 650);
+			Rectangle(hdc, 25, 200, 570, 345);
 			//Biểu đồ tròn
 			SetDCBrushColor(hdc, RGB(0, 0, 0));
 			Pie(hdc, 653, 400,853, 600, 853, 500, 790, 450); SetDCBrushColor(hdc, RGB(0, 0, 0));
