@@ -343,7 +343,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				int length_Nam = GetWindowTextLength(Nam);
 				if (length_cmbChoice == 0 || length_NoiDung == 0 || length_SoTien == 0 ||
 					length_Ngay == 0 || length_Thang == 0 || length_Nam == 0) {
-					MessageBox(0, L"Vui lòng nhập đầy đủ thông tin chi tiêu!", 0, 0);
+					MessageBox(0, L"Vui lòng nhập đầy đủ thông tin chi tiêu!", L"Thông báo", 0);
 					break;
 				}
 				WCHAR* ngay = new WCHAR[length_Ngay + 1];
@@ -353,7 +353,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				GetWindowText(Thang, thang, length_Thang + 1);
 				GetWindowText(Nam, nam, length_Nam + 1);
 				if (!isTrueDay(ngay, thang, nam)) {
-					MessageBox(0, L"Vui lòng nhập chính xác ngày - tháng - năm!", 0, 0);
+					MessageBox(0, L"Vui lòng nhập chính xác ngày - tháng - năm!", L"Thông báo", 0);
 					break;
 				}
 				wstring ws_nam(nam);
@@ -373,18 +373,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				string str_SoTien(ws_SoTien.begin(), ws_SoTien.end());
 				fstream file;
 				
-				string address = "data/" + str_nam + "/" + str_thang ;
-				string str = "mkdir \"" + address + "\"";
-				system(str.c_str());
-				address+= "/"+str_ngay + ".txt";
-				file.open(address, ios::app);
+				string temp = "data/" + str_nam + "/" + str_thang + "/" + str_ngay + ".txt";
+				file.open(temp , ios::app);
 				if (!file.good()) {
-					MessageBox(0, 0, 0, 0);
-					break;
+					string address = "data/" + str_nam + "/" + str_thang;
+					string str = "mkdir \"" + address + "\"";
+					system(str.c_str());
+					address += "/" + str_ngay + ".txt";
+					file.open(address, ios::app);
+					if (!file.good()) {
+						MessageBox(0, L"Không thể thêm dữ liệu!", L"Thông báo", 0);
+						break;
+					}
 				}
 				file << ItemIndex << " " << str_NoiDung << " " << str_SoTien << '\n';
 				file.close();
-				
+				MessageBox(0, L"Thêm dữ liệu thành công!", L"Thông báo", 0);
 					//int ItemIndex = SendMessage(cmbChoice, (UINT)CB_GETCURSEL,
 					//	(WPARAM)0, (LPARAM)0);//?? HWND của combo box đâu
 					//int length = GetWindowTextLength(cmbChoice);
