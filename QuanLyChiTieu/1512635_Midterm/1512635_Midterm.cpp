@@ -200,7 +200,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HWND Nam = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 438, 115, 40, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
 
-		hwnd = CreateWindowEx(0, L"BUTTON", L"Tư vấn", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 150, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT, hInst, NULL);
+		hwnd = CreateWindowEx(0, L"BUTTON", L"Thêm vào", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 150, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 
 		/////////////////////////////////////Show data
@@ -222,10 +222,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		col.cx = 150;
 		ListView_InsertColumn(hList, 2, &col);
 
-		hwnd = CreateWindowEx(0, L"STATIC", L"Tổng chi tiêu:", WS_CHILD | WS_VISIBLE | SS_LEFT, 900, 290, 100, 20, hWnd, NULL, hInst, NULL);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Tổng chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 900, 290, 100, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		HWND TongChiTieu = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER, 1000, 288, 150, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(TongChiTieu, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Tổng thu nhập", WS_CHILD | WS_VISIBLE | SS_LEFT, 650, 290, 150, 20, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		HWND TongThuNhap = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER, 750, 288, 150, 20, hWnd, NULL, hInst, NULL);
+		SendMessage(TongThuNhap, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Danh sách đã chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 832, 17, 150, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 
@@ -273,6 +277,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SendMessage(cmbChoice_Loai, CB_ADDSTRING, NULL, (LPARAM)L"Tháng - Năm");
 		SendMessage(cmbChoice_Loai, CB_ADDSTRING, NULL, (LPARAM)L"Năm");
 		hwnd = CreateWindowEx(0, L"BUTTON", L"Xem", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 335, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+
+		//Group Thu nhập
+		hwnd = CreateWindowEx(0, L"STATIC", L"Thêm dữ liệu thu nhập trong ngày", WS_CHILD | WS_VISIBLE | SS_LEFT, 220, 412, 153, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Số tiền thu nhập", WS_CHILD | WS_VISIBLE | SS_LEFT, 50, 440, 150, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		HWND SoTienThu = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER, 178, 440, 120, 20, hWnd, NULL, hInst, NULL);
+		SendMessage(SoTienThu, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Ngày", WS_CHILD | WS_VISIBLE | SS_LEFT, 100, 480, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		HWND NgayB = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 150, 480, 23, 20, hWnd, NULL, hInst, NULL);
+		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Tháng", WS_CHILD | WS_VISIBLE | SS_LEFT, 223, 480, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		HWND ThangB = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 290, 480, 23, 20, hWnd, NULL, hInst, NULL);
+		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Năm", WS_CHILD | WS_VISIBLE | SS_LEFT, 385, 480, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		HWND NamB = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 438, 480, 40, 20, hWnd, NULL, hInst, NULL);
+		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"BUTTON", L"Thêm vào", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 510, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		////Group combobox
 		//HWND cmb = CreateWindow(L"combobox", L"", WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST
@@ -326,6 +352,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			Rectangle(hdc, 625, 25, 1175, 330);
 			Rectangle(hdc, 625, 365, 1175, 650);
 			Rectangle(hdc, 25, 230, 570, 390);
+			Rectangle(hdc, 25, 420, 570, 562);
 			//Biểu đồ tròn
 			SetDCBrushColor(hdc, RGB(0, 0, 0));
 			Pie(hdc, 653, 400,853, 600, 853, 500, 790, 450); SetDCBrushColor(hdc, RGB(0, 0, 0));
