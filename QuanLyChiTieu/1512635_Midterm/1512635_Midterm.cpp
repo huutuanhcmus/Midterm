@@ -99,7 +99,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Store instance handle in our global variable
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, 1220, 700, nullptr, nullptr, hInstance, nullptr);
+      0, 0, 1220, 730, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -122,6 +122,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - post a quit message and return
 //
 //
+HWND cmbChoice;
+HWND NoiDung;
+HWND SoTien;
+HWND Ngay;
+HWND Thang;
+HWND Nam;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -160,7 +166,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		//////////////////////////////////////////Input data
 		//Group combobox
-		HWND cmbChoice = CreateWindow(L"combobox", L"", WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST
+		cmbChoice = CreateWindow(L"combobox", L"", WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST
 			, 50, 75, 125, 15, hWnd, (HMENU)ID_CMBCHOICE, hInst, NULL);
 		HWND hwnd = CreateWindowEx(0, L"STATIC", L"Loại chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 50, 50, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
@@ -175,13 +181,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		//Group nội dung
 		hwnd = CreateWindowEx(0, L"STATIC", L"Nội dung:", WS_CHILD | WS_VISIBLE | SS_LEFT, 200, 50, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND NoiDung = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE | WS_BORDER, 200, 75, 200, 20, hWnd, NULL, hInst, NULL);
+		NoiDung = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE | WS_BORDER, 200, 75, 200, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
 
 		//Group số tiền
 		hwnd = CreateWindowEx(0, L"STATIC", L"Số tiền:", WS_CHILD | WS_VISIBLE | SS_LEFT, 425, 50, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND SoTien = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER, 425, 75, 120, 20, hWnd, NULL, hInst, NULL);
+		SoTien = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER, 425, 75, 120, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(SoTien, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		
 		hwnd = CreateWindowEx(0, L"STATIC", L"Thêm dữ liệu chi tiêu trong ngày", WS_CHILD | WS_VISIBLE | SS_LEFT, 180, 17, 220, 15, hWnd, NULL, hInst, NULL);
@@ -189,15 +195,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		
 		hwnd = CreateWindowEx(0, L"STATIC", L"Ngày", WS_CHILD | WS_VISIBLE | SS_LEFT, 100, 115, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND Ngay = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 150, 115, 23, 20, hWnd, NULL, hInst, NULL);
+		Ngay = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 150, 115, 23, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Tháng", WS_CHILD | WS_VISIBLE | SS_LEFT, 223, 115, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND Thang = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 290, 115, 23, 20, hWnd, NULL, hInst, NULL);
+		Thang = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 290, 115, 23, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Năm", WS_CHILD | WS_VISIBLE | SS_LEFT, 385, 115, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND Nam = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 438, 115, 40, 20, hWnd, NULL, hInst, NULL);
+		Nam = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER | ES_NUMBER, 438, 115, 40, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
 
 		hwnd = CreateWindowEx(0, L"BUTTON", L"Thêm vào", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 150, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT, hInst, NULL);
@@ -322,6 +328,52 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // Parse the menu selections:
             switch (wmId)
             {
+			case IDC_BUTTON_INPUT:
+			{
+				int length_cmbChoice = GetWindowTextLength(cmbChoice);
+				int length_NoiDung = GetWindowTextLength(NoiDung);
+				int length_SoTien = GetWindowTextLength(SoTien);
+				int length_Ngay = GetWindowTextLength(Ngay);
+				int length_Thang = GetWindowTextLength(Thang);
+				int length_Nam = GetWindowTextLength(Nam);
+				if (length_cmbChoice == 0 || length_NoiDung == 0 || length_SoTien == 0 ||
+					length_Ngay == 0 || length_Thang == 0 || length_Nam == 0) {
+					MessageBox(0, L"Vui lòng nhập đầy đủ thông tin chi tiêu!", 0, 0);
+					break;
+				}
+				WCHAR* ngay = new WCHAR[length_Ngay + 1];
+				WCHAR* thang = new WCHAR[length_Thang + 1];
+				WCHAR* nam = new WCHAR[length_Nam + 1];
+				GetWindowText(Ngay, ngay, length_Ngay + 1);
+				GetWindowText(Thang, thang, length_Thang + 1);
+				GetWindowText(Nam, nam, length_Nam + 1);
+				if (!isTrueDay(ngay, thang, nam)) {
+					MessageBox(0, L"Vui lòng nhập chính xác ngày - tháng - năm!", 0, 0);
+					break;
+				}
+					//int ItemIndex = SendMessage(cmbChoice, (UINT)CB_GETCURSEL,
+					//	(WPARAM)0, (LPARAM)0);//?? HWND của combo box đâu
+					//int length = GetWindowTextLength(cmbChoice);
+					//WCHAR*  cbItem = new WCHAR[length + 1];
+					//cbItem = L"";
+
+					//(WCHAR)SendMessage(cmbChoice, (UINT)CB_GETLBTEXT,
+					//	(WPARAM)ItemIndex, (LPARAM)cbItem);
+
+					//if (cbItem == L"")
+					//	MessageBox(0, &cbItem[0], 0, 0);
+				//NoiDung
+
+				/*WCHAR *content = NULL;
+				int szcontent;
+				szcontent = GetWindowTextLength(NoiDung);
+				content = new WCHAR[szcontent + 1];
+				content = L"";
+				GetWindowText(NoiDung, content, szcontent + 1);
+				if (content == L"")
+					MessageBox(0, content, 0, 0);*/
+				break;
+			}
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
@@ -409,4 +461,45 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+bool isTrueDay(WCHAR* ngay, WCHAR* thang, WCHAR* nam) {
+	int Ngay, Thang, Nam;
+	Ngay = _wtof(ngay);
+	Thang = _wtof(thang);
+	Nam = _wtof(nam);
+	switch (Thang) {
+		case 1:
+		case 3:
+		case 5:
+		case 7:
+		case 8:
+		case 10:
+		case 12:
+			if (Ngay >= 1 && Ngay <= 31)
+				return true;
+			else
+				return false;
+		case 4:
+		case 6:
+		case 9:
+		case 11:
+			if (Ngay >= 1 && Ngay <= 30)
+				return true;
+			else
+				return false;
+		case 2:
+			if (Nam % 4 == 0 && Nam % 100 != 0 || Nam % 400 == 0) {
+				if (Ngay >= 1 && Ngay <= 29)
+					return true;
+			}
+			else {
+				if (Ngay >= 1 && Ngay <= 28)
+					return true;
+			}
+			return false;
+		default:
+			return false;
+	}
+	return false;
 }
