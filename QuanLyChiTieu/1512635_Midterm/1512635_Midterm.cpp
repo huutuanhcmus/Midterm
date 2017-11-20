@@ -5,6 +5,11 @@
 #include "1512635_Midterm.h"
 #include<cmath>
 #include<Windowsx.h>
+#include<string>
+#include<fstream>
+
+using namespace std;
+
 #define MAX_LOADSTRING 100
 
 // Global Variables:
@@ -351,6 +356,35 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					MessageBox(0, L"Vui lòng nhập chính xác ngày - tháng - năm!", 0, 0);
 					break;
 				}
+				wstring ws_nam(nam);
+				wstring ws_thang(thang);
+				wstring ws_ngay(ngay);
+				string str_nam(ws_nam.begin(), ws_nam.end());
+				string str_thang(ws_thang.begin(), ws_thang.end());
+				string str_ngay(ws_ngay.begin(), ws_ngay.end());
+				int ItemIndex = SendMessage(cmbChoice, (UINT)CB_GETCURSEL,(WPARAM)0, (LPARAM)0);
+				WCHAR* content_NoiDung = new WCHAR[length_NoiDung + 1];
+				GetWindowText(NoiDung, content_NoiDung, length_NoiDung + 1);
+				wstring ws_NoiDung(content_NoiDung);
+				string str_NoiDung(ws_NoiDung.begin(), ws_NoiDung.end());
+				WCHAR* content_SoTien = new WCHAR[length_SoTien + 1];
+				GetWindowText(SoTien, content_SoTien, length_SoTien + 1);
+				wstring ws_SoTien(content_SoTien);
+				string str_SoTien(ws_SoTien.begin(), ws_SoTien.end());
+				fstream file;
+				
+				string address = "data/" + str_nam + "/" + str_thang ;
+				string str = "mkdir \"" + address + "\"";
+				system(str.c_str());
+				address+= "/"+str_ngay + ".txt";
+				file.open(address, ios::app);
+				if (!file.good()) {
+					MessageBox(0, 0, 0, 0);
+					break;
+				}
+				file << ItemIndex << " " << str_NoiDung << " " << str_SoTien << '\n';
+				file.close();
+				
 					//int ItemIndex = SendMessage(cmbChoice, (UINT)CB_GETCURSEL,
 					//	(WPARAM)0, (LPARAM)0);//?? HWND của combo box đâu
 					//int length = GetWindowTextLength(cmbChoice);
