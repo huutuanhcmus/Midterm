@@ -8,6 +8,8 @@
 #include<string>
 #include<fstream>
 
+#pragma comment (lib,"User32.lib")
+
 using namespace std;
 
 #define MAX_LOADSTRING 100
@@ -148,6 +150,11 @@ HWND hList;
 
 HWND TongChiTieu;
 HWND TongThuNhap;
+
+double Thu, Chi;
+double arrayData[6];
+
+bool flag = false;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -430,6 +437,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 			case IDC_BUTTON_INPUT_XEM:
 			{
+				for (int i = 0; i < 6; i++)
+					arrayData[i] = 0;
+				Thu = Chi = 0;
 				ListView_DeleteAllItems(hList);
 				WCHAR* ngayA;
 				WCHAR* thangA;
@@ -459,7 +469,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						break;
 					}
 					int pos = 0;
-					double Thu, Chi;
+					Thu = Chi = 0;
 					OutputData(hList, ngayA, thangA, namA, pos, Thu, Chi);
 					WCHAR str1[20];
 					swprintf_s(str1, L"%f", Thu);
@@ -467,6 +477,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					swprintf_s(str2, L"%f", Chi);
 					SendMessage(TongThuNhap, WM_SETTEXT, NULL, (LPARAM)str1);
 					SendMessage(TongChiTieu, WM_SETTEXT, NULL, (LPARAM)str2);
+					InvalidateRect(hWnd, NULL, TRUE);
+					//SendMessage(hWnd, WM_PAINT, 0 , 0);
+					/*RECT* rctB = new RECT{ 20,30,180,230 };
+					InvalidateRect(hWnd, rctB, true);*/
 				}
 				else if (ItemIndex == 1) {
 					if (length_ThangA == 0 || length_NamA == 0) {
@@ -482,7 +496,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						break;
 					}
 					int pos = 0;
-					double Thu, Chi;
 					Thu = Chi = 0;
 					for (int i = 1; i <= lengthDay(_wtoi(thangA), _wtoi(namA)); i++) {
 						wstring value = to_wstring(i);
@@ -515,6 +528,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					swprintf_s(str2, L"%f", Chi);
 					SendMessage(TongThuNhap, WM_SETTEXT, NULL, (LPARAM)str1);
 					SendMessage(TongChiTieu, WM_SETTEXT, NULL, (LPARAM)str2);
+					InvalidateRect(hWnd, NULL, TRUE);
 				}
 				else {
 					if (length_NamA == 0) {
@@ -524,7 +538,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					namA = new WCHAR[length_NamA + 1];
 					GetWindowText(NamA, namA, length_NamA + 1);
 					int pos = 0;
-					double Thu, Chi;
 					Thu = Chi = 0;
 					for (int i = 1; i <= 12; i++) {
 						wstring value = to_wstring(i);
@@ -569,6 +582,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					swprintf_s(str2, L"%f", Chi);
 					SendMessage(TongThuNhap, WM_SETTEXT, NULL, (LPARAM)str1);
 					SendMessage(TongChiTieu, WM_SETTEXT, NULL, (LPARAM)str2);
+					InvalidateRect(hWnd, NULL, TRUE);
 				}
 				
 				break;
@@ -654,34 +668,106 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			Rectangle(hdc, 625, 365, 1175, 650);
 			Rectangle(hdc, 25, 230, 570, 390);
 			Rectangle(hdc, 25, 420, 570, 562);
-			//Biểu đồ tròn
-			SetDCBrushColor(hdc, RGB(0, 0, 0));
-			Pie(hdc, 653, 400,853, 600, 853, 500, 790, 450); SetDCBrushColor(hdc, RGB(0, 0, 0));
-			SetDCBrushColor(hdc, RGB(100, 100, 100));
-			Pie(hdc, 653, 400, 853, 600, 790, 550, 853, 500);
-			//Cột 1
-			SetDCBrushColor(hdc, RGB(223, 0, 41));
-			Pie(hdc, 900, 400, 1000, 500, 950, 450, 993, 425);
-			//Cột 2
-			SetDCBrushColor(hdc, RGB(91, 189, 43));
-			Pie(hdc, 900, 435, 1000, 535, 950, 485, 993, 460);
-			//Cột 3
-			SetDCBrushColor(hdc, RGB(0, 178, 191));
-			Pie(hdc, 900, 470, 1000, 570, 950, 520, 993, 495);
-			//Cột 4
-			SetDCBrushColor(hdc, RGB(252, 245, 76));
-			Pie(hdc, 900, 505, 1000, 605, 950, 555, 993, 530);
-			//Cột 5
-			SetDCBrushColor(hdc, RGB(121, 55, 139));
-			Pie(hdc, 900, 540, 1000, 640, 950, 590, 993, 565);
-			//Cột 6
-			SetDCBrushColor(hdc, RGB(162, 0, 124));
-			Pie(hdc, 900, 575, 1000, 675, 950, 625, 993, 600);
-            EndPaint(hWnd, &ps);
 
-			
+			if (flag == true) {
 
+				int Do[6] = { 0 };
+				if (Chi == 0)
+					break;
+				Do[0]= (arrayData[0] / Chi) * 360;
+				for (int i = 1; i < 6; i++) {
+					Do[i] = Do[i - 1] + (arrayData[i] / Chi) * 360;
+				}
+				bool subFlag[6];
+				//Biểu đồ tròn
+				POINT start, end, cent, temp;
+				int TongDo[6] = { 0 };
+				for (int i = 0; i < 6; i++) {
+					TongDo[i] = (arrayData[i] / Chi) * 360;
+					if (TongDo[i] == 0)
+						subFlag[i] = false;
+					else
+						subFlag[i] = true;
+				}
+				for (int i = 5; i >= 0; i--) {
+					if (subFlag[i] == true) {
+						Do[i] = 360;
+						break;
+					}
+				}
+				cent.x = 753;
+				cent.y = 500;
+				temp.x = 753;
+				temp.y = 400;
+				if (subFlag[0]) {
+					SetDCBrushColor(hdc, RGB(162, 0, 124));
+					start = temp;
+					end = FindPointCircle(cent, 100, Do[0]);
+					temp = end;
+					Pie(hdc, 653, 400, 853, 600, end.x, end.y, start.x, start.y);
+				}
+				if (subFlag[1]) {
+					SetDCBrushColor(hdc, RGB(91, 189, 43));
+					start = temp;
+					end = FindPointCircle(cent, 100, Do[1]);
+					temp = end;
+					Pie(hdc, 653, 400, 853, 600, end.x, end.y, start.x, start.y);
+				}
+				if (subFlag[2]) {
+					SetDCBrushColor(hdc, RGB(0, 178, 191));
+					start = temp;
+					end = FindPointCircle(cent, 100, Do[2]);
+					temp = end;
+					Pie(hdc, 653, 400, 853, 600, end.x, end.y, start.x, start.y);
+				}
+				if (subFlag[3]) {
+					SetDCBrushColor(hdc, RGB(252, 245, 76));
+					start = temp;
+					end = FindPointCircle(cent, 100, Do[3]);
+					temp = end;
+					Pie(hdc, 653, 400, 853, 600, end.x, end.y, start.x, start.y);
+				}
+				if (subFlag[4]) {
+					SetDCBrushColor(hdc, RGB(121, 55, 139));
+					start = temp;
+					end = FindPointCircle(cent, 100, Do[4]);
+					temp = end;
+					Pie(hdc, 653, 400, 853, 600, end.x, end.y, start.x, start.y);
+				}
+				if (subFlag[5]) {
+					SetDCBrushColor(hdc, RGB(0, 103, 107));
+					start = temp;
+					end.x = 753;
+					end.y = 400;
+					temp = end;
+					Pie(hdc, 653, 400, 853, 600, end.x, end.y, start.x, start.y);
+				}
+
+				//Cột 1
+				SetDCBrushColor(hdc, RGB(162, 0, 124));
+				Pie(hdc, 900, 400, 1000, 500, 950, 450, 993, 425);
+				//Cột 2
+				SetDCBrushColor(hdc, RGB(91, 189, 43));
+				Pie(hdc, 900, 435, 1000, 535, 950, 485, 993, 460);
+				//Cột 3
+				SetDCBrushColor(hdc, RGB(0, 178, 191));
+				Pie(hdc, 900, 470, 1000, 570, 950, 520, 993, 495);
+				//Cột 4
+				SetDCBrushColor(hdc, RGB(252, 245, 76));
+				Pie(hdc, 900, 505, 1000, 605, 950, 555, 993, 530);
+				//Cột 5
+				SetDCBrushColor(hdc, RGB(121, 55, 139));
+				Pie(hdc, 900, 540, 1000, 640, 950, 590, 993, 565);
+				//Cột 6
+				SetDCBrushColor(hdc, RGB(0, 103, 107));
+				Pie(hdc, 900, 575, 1000, 675, 950, 625, 993, 600);
+				EndPaint(hWnd, &ps);
+
+			}
+			flag = true;
+			EndPaint(hWnd, &ps);
         }
+
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
@@ -810,7 +896,8 @@ bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos, do
 			string narrow_string3(phi);
 			wstring wide_string3 = wstring(narrow_string3.begin(), narrow_string3.end());
 			const WCHAR* result3 = wide_string3.c_str();
-			Chi = Chi + stod(phi);
+			double db_phi = stod(phi);;
+			Chi = Chi + db_phi;
 			LVITEM m;
 			m.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM;
 			m.iSubItem = 0;
@@ -821,21 +908,27 @@ bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos, do
 			m.iItem = pos;
 			ListView_InsertItem(hList, &m);
 			if (loai == "0") {
+				arrayData[0] = arrayData[0] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Ăn uống");
 			}
 			else if (loai == "1") {
+				arrayData[1] = arrayData[1] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Di chuyển");
 			}
 			else if (loai == "2") {
+				arrayData[2] = arrayData[2] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Nhà cửa");
 			}
 			else if (loai == "3") {
+				arrayData[3] = arrayData[3] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Xe cộ");
 			}
 			else if (loai == "4") {
+				arrayData[4] = arrayData[4] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Nhu yếu phẩm");
 			}
 			else if (loai == "5") {
+				arrayData[5] = arrayData[5] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Dịch vụ");
 			}
 			ListView_SetItemText(hWnd1, pos, 1, (WCHAR*)result2);
