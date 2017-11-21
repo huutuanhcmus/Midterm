@@ -7,6 +7,6 @@
 #pragma comment(lib, "ComCtl32.lib")
 
 bool isTrueDay(WCHAR* ngay, WCHAR* thang, WCHAR* nam);
-bool OutputData(HWND &hWnd, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos);
+bool OutputData(HWND &hWnd, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos, double &Thu, double &Chi);
 int lengthDay(int thang, int nam);
 bool isHave(WCHAR *ngay, WCHAR *thang, WCHAR *nam);

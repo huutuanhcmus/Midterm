@@ -146,6 +146,9 @@ HWND NamA;
 
 HWND hList;
 
+HWND TongChiTieu;
+HWND TongThuNhap;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -248,11 +251,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		hwnd = CreateWindowEx(0, L"STATIC", L"Tổng chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 900, 290, 100, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND TongChiTieu = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER, 1000, 288, 150, 20, hWnd, NULL, hInst, NULL);
+		TongChiTieu = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER, 1000, 288, 150, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(TongChiTieu, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Tổng thu nhập", WS_CHILD | WS_VISIBLE | SS_LEFT, 650, 290, 150, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		HWND TongThuNhap = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER, 750, 288, 150, 20, hWnd, NULL, hInst, NULL);
+		TongThuNhap = CreateWindowEx(0, L"EDIT", L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | WS_BORDER, 750, 288, 150, 20, hWnd, NULL, hInst, NULL);
 		SendMessage(TongThuNhap, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Danh sách đã chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 832, 17, 150, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
@@ -456,7 +459,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						break;
 					}
 					int pos = 0;
-					OutputData(hList, ngayA, thangA, namA, pos);
+					double Thu, Chi;
+					OutputData(hList, ngayA, thangA, namA, pos, Thu, Chi);
+					WCHAR str1[20];
+					swprintf_s(str1, L"%f", Thu);
+					WCHAR str2[20];
+					swprintf_s(str2, L"%f", Chi);
+					SendMessage(TongThuNhap, WM_SETTEXT, NULL, (LPARAM)str1);
+					SendMessage(TongChiTieu, WM_SETTEXT, NULL, (LPARAM)str2);
 				}
 				else if (ItemIndex == 1) {
 					if (length_ThangA == 0 || length_NamA == 0) {
@@ -472,6 +482,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						break;
 					}
 					int pos = 0;
+					double Thu, Chi;
+					Thu = Chi = 0;
 					for (int i = 1; i <= lengthDay(_wtoi(thangA), _wtoi(namA)); i++) {
 						wstring value = to_wstring(i);
 						const WCHAR* ngayTemp = value.c_str();
@@ -492,8 +504,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						ListView_SetItemText(hList, pos, 2, L"****************");
 						ListView_SetItemText(hList, pos, 1, folder);
 						pos++;
-						OutputData(hList, (WCHAR*)ngayTemp, thangA, namA, pos);
+						double ThuTemp, ChiTemp;
+						OutputData(hList, (WCHAR*)ngayTemp, thangA, namA, pos, ThuTemp, ChiTemp);
+						Thu += ThuTemp;
+						Chi += ChiTemp;
 					}
+					WCHAR str1[20];
+					swprintf_s(str1, L"%f", Thu);
+					WCHAR str2[20];
+					swprintf_s(str2, L"%f", Chi);
+					SendMessage(TongThuNhap, WM_SETTEXT, NULL, (LPARAM)str1);
+					SendMessage(TongChiTieu, WM_SETTEXT, NULL, (LPARAM)str2);
 				}
 				else {
 					if (length_NamA == 0) {
@@ -503,6 +524,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					namA = new WCHAR[length_NamA + 1];
 					GetWindowText(NamA, namA, length_NamA + 1);
 					int pos = 0;
+					double Thu, Chi;
+					Thu = Chi = 0;
 					for (int i = 1; i <= 12; i++) {
 						wstring value = to_wstring(i);
 						const WCHAR* thangTemp = value.c_str();
@@ -534,9 +557,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 							ListView_SetItemText(hList, pos, 2, L"****************");
 							ListView_SetItemText(hList, pos, 1, folder1);
 							pos++;
-							OutputData(hList, (WCHAR*)ngayTemp, (WCHAR*)thangTemp, namA, pos);
+							double ThuTemp, ChiTemp;
+							OutputData(hList, (WCHAR*)ngayTemp, (WCHAR*)thangTemp, namA, pos, ThuTemp, ChiTemp);
+							Thu += ThuTemp;
+							Chi += ChiTemp;
 						}
 					}
+					WCHAR str1[20];
+					swprintf_s(str1, L"%f", Thu);
+					WCHAR str2[20];
+					swprintf_s(str2, L"%f", Chi);
+					SendMessage(TongThuNhap, WM_SETTEXT, NULL, (LPARAM)str1);
+					SendMessage(TongChiTieu, WM_SETTEXT, NULL, (LPARAM)str2);
 				}
 				
 				break;
@@ -721,7 +753,8 @@ bool isTrueDay(WCHAR* ngay, WCHAR* thang, WCHAR* nam) {
 	return false;
 }
 
-bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos){
+bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos, double &Thu, double &Chi){
+	Thu = Chi = 0;
 	wstring ws_nam(nam);
 	wstring ws_thang(thang);
 	wstring ws_ngay(ngay);
@@ -740,6 +773,7 @@ bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos){
 			getline(fileThu, Tien);
 			if (Tien == "")
 				break;
+			Thu = Thu + stod(Tien);
 			string narrow_string(Tien);
 			wstring wide_string = wstring(narrow_string.begin(), narrow_string.end());
 			const WCHAR* result = wide_string.c_str();
@@ -776,6 +810,7 @@ bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos){
 			string narrow_string3(phi);
 			wstring wide_string3 = wstring(narrow_string3.begin(), narrow_string3.end());
 			const WCHAR* result3 = wide_string3.c_str();
+			Chi = Chi + stod(phi);
 			LVITEM m;
 			m.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM;
 			m.iSubItem = 0;
@@ -854,4 +889,17 @@ bool isHave(WCHAR *ngay, WCHAR *thang, WCHAR *nam){
 	if (fileChi.good())
 		fileChi.close();
 	return true;
+}
+
+POINT FindPointCircle(POINT cent, int R, int Goc) {
+	POINT kq;
+	if (Goc <= 90 || Goc > 180 && Goc <= 270) {
+		kq.x = cent.x + R*sin((Goc*3.14) / 180 * 1.0);
+		kq.y = cent.y - R*cos((Goc*3.14) / 180 * 1.0);
+	}
+	else {
+		kq.x = cent.x + R*sin((Goc*3.14) / 180 * 1.0);
+		kq.y = cent.y + R*cos((Goc*3.14) / 180 * 1.0);
+	}
+	return kq;
 }
