@@ -893,13 +893,7 @@ bool isHave(WCHAR *ngay, WCHAR *thang, WCHAR *nam){
 
 POINT FindPointCircle(POINT cent, int R, int Goc) {
 	POINT kq;
-	if (Goc <= 90 || Goc > 180 && Goc <= 270) {
-		kq.x = cent.x + R*sin((Goc*3.14) / 180 * 1.0);
-		kq.y = cent.y - R*cos((Goc*3.14) / 180 * 1.0);
-	}
-	else {
-		kq.x = cent.x + R*sin((Goc*3.14) / 180 * 1.0);
-		kq.y = cent.y + R*cos((Goc*3.14) / 180 * 1.0);
-	}
+	kq.x = cent.x + R*sin((Goc*3.14) / 180 * 1.0);
+	kq.y = cent.y - R*cos((Goc*3.14) / 180 * 1.0);
 	return kq;
 }

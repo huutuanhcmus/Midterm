@@ -10,3 +10,4 @@ bool isTrueDay(WCHAR* ngay, WCHAR* thang, WCHAR* nam);
 bool OutputData(HWND &hWnd, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos, double &Thu, double &Chi);
 int lengthDay(int thang, int nam);
 bool isHave(WCHAR *ngay, WCHAR *thang, WCHAR *nam);
+POINT FindPointCircle(POINT cent, int R, int Goc);
