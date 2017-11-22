@@ -349,7 +349,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SendMessage(NoiDung, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"BUTTON", L"Thêm vào", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 510, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT_THU, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		
+
+		hwnd = CreateWindowEx(0, L"STATIC", L"Chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 75, 637, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+		hwnd = CreateWindowEx(0, L"STATIC", L"Tiết kiệm", WS_CHILD | WS_VISIBLE | SS_LEFT, 275, 637, 100, 15, hWnd, NULL, hInst, NULL);
+		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
+
 		wfstream fileA;
 		fileA.open("History.txt", ios::in);
 		WCHAR ngay[3];
@@ -688,15 +693,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
-	case WM_MOUSEMOVE:
-	{
-		int x = GET_X_LPARAM(lParam);
-		int y = GET_Y_LPARAM(lParam);
-		WCHAR buffer[200];
-		wsprintf(buffer, L"%d, %d", x, y);
-		SetWindowText(hWnd, buffer);
-		break;
-	}
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
@@ -788,7 +784,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					temp = end;
 					Pie(hdc, 653, 400, 853, 600, end.x, end.y, start.x, start.y);
 				}
-
+				SetDCBrushColor(hdc, RGB(223, 0, 41));
+				Rectangle(hdc, 25, 630, 60, 660);
+				SetDCBrushColor(hdc, RGB(0, 178, 191));
+				Rectangle(hdc, 225, 630, 260, 660);
+				if (Thu >= Chi) {
+					SetDCBrushColor(hdc, RGB(0, 178, 191));
+					Rectangle(hdc, 25, 580, 571, 610);
+					SetDCBrushColor(hdc, RGB(223, 0, 41));
+					Rectangle(hdc, 25, 580, 25+546*(Chi/Thu), 610);
+				}
+				else if (Thu < Chi) {
+					SetDCBrushColor(hdc, RGB(223, 0, 41));
+					Rectangle(hdc, 25, 580, 571, 610);
+				}
+				
 				//Cột 1
 				SetDCBrushColor(hdc, RGB(162, 0, 124));
 				Pie(hdc, 900, 400, 1000, 500, 950, 450, 993, 425);
@@ -808,21 +818,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				SetDCBrushColor(hdc, RGB(0, 103, 107));
 				Pie(hdc, 900, 575, 1000, 675, 950, 625, 993, 600);
 				EndPaint(hWnd, &ps);
-
-				if (Thu > Chi) {
-					SetDCBrushColor(hdc, RGB(223, 0, 41));
-					Rectangle(hdc, 25, 600, 600, 650);
-				}
-				else if (Thu < Chi) {
-					SetDCBrushColor(hdc, RGB(223, 0, 41));
-					Rectangle(hdc, 0, 0, 1000, 1000);
-				}
 			}
 
-			SetDCBrushColor(hdc, RGB(223, 0, 41));
-			SelectObject(hdc, GetStockObject(DC_BRUSH));
-			SetDCBrushColor(hdc, RGB(223, 0, 41));
-			Rectangle(hdc, 25, 100, 600, 650);
+			
 			flag = true;
 			EndPaint(hWnd, &ps);
         }
