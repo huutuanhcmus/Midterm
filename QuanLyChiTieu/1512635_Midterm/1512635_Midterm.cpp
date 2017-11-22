@@ -357,6 +357,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		wfstream fileA;
 		fileA.open("History.txt", ios::in);
+		if (!fileA.good()) {
+			MessageBox(0, L"Chào mừng bạn lần đầu tiên sử dụng hệ thống!", L"Thông báo", 0);
+			break;
+		}
 		WCHAR ngay[3];
 		WCHAR thang[3];
 		WCHAR nam[5];
