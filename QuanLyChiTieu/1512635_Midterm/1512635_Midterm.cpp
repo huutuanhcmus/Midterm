@@ -7,6 +7,7 @@
 #include<Windowsx.h>
 #include<string>
 #include<fstream>
+#include <codecvt>
 
 #pragma comment (lib,"User32.lib")
 
@@ -255,7 +256,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		col.cx = 200;
 		ListView_InsertColumn(hList, 1, &col);
 		col.pszText = L"Số tiền";
-		col.cx = 150;
+		col.cx = 200;
 		ListView_InsertColumn(hList, 2, &col);
 
 		hwnd = CreateWindowEx(0, L"STATIC", L"Tổng chi tiêu", WS_CHILD | WS_VISIBLE | SS_LEFT, 950, 290, 100, 20, hWnd, NULL, hInst, NULL);
@@ -278,23 +279,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Ăn uống", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 430, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		box[0] = CreateWindowEx(0, L"STATIC", L"0%", WS_CHILD | WS_VISIBLE | SS_LEFT, 1080, 430, 80, 15, hWnd, NULL, hInst, NULL);
+		box[0] = CreateWindowEx(0, L"STATIC", L"0%", WS_CHILD | WS_VISIBLE | SS_LEFT, 1080, 430, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(box[0], WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Di chuyển", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 465, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		box[1] = CreateWindowEx(0, L"STATIC", L"0%", WS_CHILD | WS_VISIBLE | SS_LEFT, 1093, 465, 80, 15, hWnd, NULL, hInst, NULL);
+		box[1] = CreateWindowEx(0, L"STATIC", L"0%", WS_CHILD | WS_VISIBLE | SS_LEFT, 1093, 465, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(box[1], WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Nhà cửa", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 500, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		box[2] = CreateWindowEx(0, L"STATIC", L"0%", WS_CHILD | WS_VISIBLE | SS_LEFT, 1083, 500, 80, 15, hWnd, NULL, hInst, NULL);
+		box[2] = CreateWindowEx(0, L"STATIC", L"0%", WS_CHILD | WS_VISIBLE | SS_LEFT, 1083, 500, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(box[2], WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Xe cộ", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 535, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		box[3] = CreateWindowEx(0, L"STATIC", L"0%", WS_CHILD | WS_VISIBLE | SS_LEFT, 1063, 535, 80, 15, hWnd, NULL, hInst, NULL);
+		box[3] = CreateWindowEx(0, L"STATIC", L"0%", WS_CHILD | WS_VISIBLE | SS_LEFT, 1063, 535, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(box[3], WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Nhu yếu phẩm", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 570, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
-		box[4] = CreateWindowEx(0, L"STATIC", L"0%", WS_CHILD | WS_VISIBLE | SS_LEFT, 1123, 570, 80, 15, hWnd, NULL, hInst, NULL);
+		box[4] = CreateWindowEx(0, L"STATIC", L"0%", WS_CHILD | WS_VISIBLE | SS_LEFT, 1123, 570, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(box[4], WM_SETFONT, WPARAM(hFontBold), TRUE);
 		hwnd = CreateWindowEx(0, L"STATIC", L"Dịch vụ", WS_CHILD | WS_VISIBLE | SS_LEFT, 1020, 605, 100, 15, hWnd, NULL, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
@@ -349,7 +350,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		hwnd = CreateWindowEx(0, L"BUTTON", L"Thêm vào", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 240, 510, 100, 35, hWnd, (HMENU)IDC_BUTTON_INPUT_THU, hInst, NULL);
 		SendMessage(hwnd, WM_SETFONT, WPARAM(hFontBold), TRUE);
 		
-
+		wfstream fileA;
+		fileA.open("History.txt", ios::in);
+		WCHAR ngay[3];
+		WCHAR thang[3];
+		WCHAR nam[5];
+		fileA >> ngay >> thang >> nam;
+		int index;
+		fileA >> index;
+		SendMessage(NgayA, WM_SETTEXT, NULL, (LPARAM)ngay);
+		SendMessage(ThangA, WM_SETTEXT, NULL, (LPARAM)thang);
+		SendMessage(NamA, WM_SETTEXT, NULL, (LPARAM)nam);
+		SendMessage(cmbChoice_Loai, (UINT)CB_SETCURSEL, (WPARAM)index, (LPARAM)0);
+		SendMessage(hWnd, WM_COMMAND, (WPARAM)IDC_BUTTON_INPUT_XEM, 0);
+		flag = true;
+		InvalidateRect(hWnd, NULL, TRUE);
 		break;
 
 
@@ -398,8 +413,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				GetWindowText(SoTien, content_SoTien, length_SoTien + 1);
 				wstring ws_SoTien(content_SoTien);
 				string str_SoTien(ws_SoTien.begin(), ws_SoTien.end());
-				fstream file;
-				
+				wfstream file;
 				string temp = "data/" + str_nam + "/" + str_thang + "/" + "CHI_" + str_ngay + ".txt";
 				file.open(temp , ios::app);
 				if (!file.good()) {
@@ -413,8 +427,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						break;
 					}
 				}
-				file << ItemIndex << " " << str_NoiDung << " " << str_SoTien << '\n';
+				file.imbue(std::locale(std::locale(), new std::codecvt_utf8_utf16<wchar_t,
+					0x10ffff, std::codecvt_mode(std::consume_header | std::generate_header)>));
+				file << ItemIndex << " " << ws_NoiDung << " " << ws_SoTien << '\n';
 				file.close();
+				SendMessage(NgayA, WM_SETTEXT, NULL, (LPARAM)ngay);
+				SendMessage(ThangA, WM_SETTEXT, NULL, (LPARAM)thang);
+				SendMessage(NamA, WM_SETTEXT, NULL, (LPARAM)nam);
+				SendMessage(cmbChoice_Loai, (UINT)CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
+				SendMessage(hWnd, WM_COMMAND, (WPARAM)IDC_BUTTON_INPUT_XEM, 0);
 				MessageBox(0, L"Thêm dữ liệu thành công!", L"Thông báo", 0);
 					//int ItemIndex = SendMessage(cmbChoice, (UINT)CB_GETCURSEL,
 					//	(WPARAM)0, (LPARAM)0);//?? HWND của combo box đâu
@@ -482,9 +503,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					SendMessage(TongThuNhap, WM_SETTEXT, NULL, (LPARAM)str1);
 					SendMessage(TongChiTieu, WM_SETTEXT, NULL, (LPARAM)str2);
 					InvalidateRect(hWnd, NULL, TRUE);
-					//SendMessage(hWnd, WM_PAINT, 0 , 0);
-					/*RECT* rctB = new RECT{ 20,30,180,230 };
-					InvalidateRect(hWnd, rctB, true);*/
 				}
 				else if (ItemIndex == 1) {
 					if (length_ThangA == 0 || length_NamA == 0) {
@@ -503,7 +521,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					Thu = Chi = 0;
 					for (int i = 1; i <= lengthDay(_wtoi(thangA), _wtoi(namA)); i++) {
 						wstring value = to_wstring(i);
-						const WCHAR* ngayTemp = value.c_str();
+					const WCHAR* ngayTemp = value.c_str();
 						if (!isHave((WCHAR*)ngayTemp, thangA, namA))
 							continue;
 						LVITEM m;
@@ -588,7 +606,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					SendMessage(TongChiTieu, WM_SETTEXT, NULL, (LPARAM)str2);
 					InvalidateRect(hWnd, NULL, TRUE);
 				}
-				
+				wfstream fileA;
+				fileA.open("History.txt", ios::out);
+				switch (ItemIndex) {
+					case 0:
+						fileA << ngayA << L" " << thangA << L" " << namA << L" " << ItemIndex;
+						break;
+					case 1:
+						fileA  << L"1 " << thangA << L" " << namA << L" " << ItemIndex;
+						break;
+					case 2:
+						fileA << L"1 1 " << namA << L" " << ItemIndex;
+						break;
+				}
+				fileA.close();
 				break;
 			}
 			case IDC_BUTTON_INPUT_THU:
@@ -638,6 +669,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				}
 				file << str_SoTienThu << '\n';
 				file.close();
+				SendMessage(NgayA, WM_SETTEXT, NULL, (LPARAM)ngayB);
+				SendMessage(ThangA, WM_SETTEXT, NULL, (LPARAM)thangB);
+				SendMessage(NamA, WM_SETTEXT, NULL, (LPARAM)namB);
+				SendMessage(cmbChoice_Loai, (UINT)CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
+				SendMessage(hWnd, WM_COMMAND, (WPARAM)IDC_BUTTON_INPUT_XEM, 0);
 				MessageBox(0, L"Thêm dữ liệu thành công!", L"Thông báo", 0);
 				break;
 			}
@@ -672,6 +708,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			Rectangle(hdc, 625, 365, 1225, 650);
 			Rectangle(hdc, 25, 230, 570, 390);
 			Rectangle(hdc, 25, 420, 570, 562);
+
 			for (int i = 0; i < 6; i++) {
 				SendMessage(box[i], WM_SETTEXT, NULL, (LPARAM)L"0%");
 			}
@@ -772,7 +809,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				Pie(hdc, 900, 575, 1000, 675, 950, 625, 993, 600);
 				EndPaint(hWnd, &ps);
 
+				if (Thu > Chi) {
+					SetDCBrushColor(hdc, RGB(223, 0, 41));
+					Rectangle(hdc, 25, 600, 600, 650);
+				}
+				else if (Thu < Chi) {
+					SetDCBrushColor(hdc, RGB(223, 0, 41));
+					Rectangle(hdc, 0, 0, 1000, 1000);
+				}
 			}
+
+			SetDCBrushColor(hdc, RGB(223, 0, 41));
+			SelectObject(hdc, GetStockObject(DC_BRUSH));
+			SetDCBrushColor(hdc, RGB(223, 0, 41));
+			Rectangle(hdc, 25, 100, 600, 650);
 			flag = true;
 			EndPaint(hWnd, &ps);
         }
@@ -856,7 +906,8 @@ bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos, do
 	string str_nam(ws_nam.begin(), ws_nam.end());
 	string str_thang(ws_thang.begin(), ws_thang.end());
 	string str_ngay(ws_ngay.begin(), ws_ngay.end());
-	fstream fileThu, fileChi;
+	fstream fileThu;
+	wfstream fileChi;
 	fileThu.open("data/" + str_nam + "/" + str_thang + "/" + "THU_" + str_ngay + ".txt", ios::in);
 	fileChi.open("data/" + str_nam + "/" + str_thang + "/" + "CHI_" + str_ngay + ".txt", ios::in);
 	if (!(fileThu.good() || fileChi.good())) {
@@ -890,21 +941,18 @@ bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos, do
 	}
 	if (fileChi.good()) {
 		while (!fileChi.eof()) {
-			string loai;
+			fileChi.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
+			wstring loai;
 			fileChi >> loai;
-			if (loai == "")
+			if (loai == L"")
 				break;
-			string ND;
+			wstring ND;
 			getline(fileChi, ND);
 			int vitri = ND.find_last_of(' ');
-			string phi(ND.begin() + vitri, ND.end());
+			wstring phi(ND.begin() + vitri, ND.end());
 			ND.erase(ND.begin() + vitri, ND.end());
-			string narrow_string2(ND);
-			wstring wide_string2 = wstring(narrow_string2.begin(), narrow_string2.end());
-			const WCHAR* result2 = wide_string2.c_str();
-			string narrow_string3(phi);
-			wstring wide_string3 = wstring(narrow_string3.begin(), narrow_string3.end());
-			const WCHAR* result3 = wide_string3.c_str();
+			const WCHAR* result2 = ND.c_str();
+			const WCHAR* result3 = phi.c_str();
 			double db_phi = stod(phi);;
 			Chi = Chi + db_phi;
 			LVITEM m;
@@ -916,27 +964,27 @@ bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos, do
 			m.cchTextMax = 2;
 			m.iItem = pos;
 			ListView_InsertItem(hList, &m);
-			if (loai == "0") {
+			if (loai == L"0") {
 				arrayData[0] = arrayData[0] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Ăn uống");
 			}
-			else if (loai == "1") {
+			else if (loai == L"1") {
 				arrayData[1] = arrayData[1] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Di chuyển");
 			}
-			else if (loai == "2") {
+			else if (loai == L"2") {
 				arrayData[2] = arrayData[2] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Nhà cửa");
 			}
-			else if (loai == "3") {
+			else if (loai == L"3") {
 				arrayData[3] = arrayData[3] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Xe cộ");
 			}
-			else if (loai == "4") {
+			else if (loai == L"4") {
 				arrayData[4] = arrayData[4] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Nhu yếu phẩm");
 			}
-			else if (loai == "5") {
+			else if (loai == L"5") {
 				arrayData[5] = arrayData[5] + db_phi;
 				ListView_SetItemText(hWnd1, pos, 0, L"Dịch vụ");
 			}
@@ -946,6 +994,7 @@ bool OutputData(HWND &hWnd1, WCHAR* ngay, WCHAR* thang, WCHAR* nam, int &pos, do
 		}
 		fileChi.close();
 	}
+	return true;
 }
 
 int lengthDay(int thang, int nam) {
