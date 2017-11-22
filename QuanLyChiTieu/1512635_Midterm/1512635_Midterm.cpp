@@ -442,27 +442,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				SendMessage(cmbChoice_Loai, (UINT)CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
 				SendMessage(hWnd, WM_COMMAND, (WPARAM)IDC_BUTTON_INPUT_XEM, 0);
 				MessageBox(0, L"Thêm dữ liệu thành công!", L"Thông báo", 0);
-					//int ItemIndex = SendMessage(cmbChoice, (UINT)CB_GETCURSEL,
-					//	(WPARAM)0, (LPARAM)0);//?? HWND của combo box đâu
-					//int length = GetWindowTextLength(cmbChoice);
-					//WCHAR*  cbItem = new WCHAR[length + 1];
-					//cbItem = L"";
-
-					//(WCHAR)SendMessage(cmbChoice, (UINT)CB_GETLBTEXT,
-					//	(WPARAM)ItemIndex, (LPARAM)cbItem);
-
-					//if (cbItem == L"")
-					//	MessageBox(0, &cbItem[0], 0, 0);
-				//NoiDung
-
-				/*WCHAR *content = NULL;
-				int szcontent;
-				szcontent = GetWindowTextLength(NoiDung);
-				content = new WCHAR[szcontent + 1];
-				content = L"";
-				GetWindowText(NoiDung, content, szcontent + 1);
-				if (content == L"")
-					MessageBox(0, content, 0, 0);*/
+				if(ngay != NULL)
+					delete[] ngay;
+				if(thang != NULL)
+					delete[] thang;
+				if(nam != NULL)
+					delete[] nam;
+				if(content_NoiDung != NULL)
+					delete[] content_NoiDung;
+				if (content_SoTien != NULL)
+					delete[] content_SoTien;
 				break;
 			}
 			case IDC_BUTTON_INPUT_XEM:
@@ -471,9 +460,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					arrayData[i] = 0;
 				Thu = Chi = 0;
 				ListView_DeleteAllItems(hList);
-				WCHAR* ngayA;
-				WCHAR* thangA;
-				WCHAR* namA;
+				WCHAR* ngayA = NULL;
+				WCHAR* thangA = NULL;
+				WCHAR* namA = NULL;
 				int length_cmbChoice_Loai = GetWindowTextLength(cmbChoice_Loai);
 				int length_NgayA = GetWindowTextLength(NgayA);
 				int length_ThangA = GetWindowTextLength(ThangA);
@@ -526,7 +515,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					Thu = Chi = 0;
 					for (int i = 1; i <= lengthDay(_wtoi(thangA), _wtoi(namA)); i++) {
 						wstring value = to_wstring(i);
-					const WCHAR* ngayTemp = value.c_str();
+						const WCHAR* ngayTemp = value.c_str();
 						if (!isHave((WCHAR*)ngayTemp, thangA, namA))
 							continue;
 						LVITEM m;
@@ -548,6 +537,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						OutputData(hList, (WCHAR*)ngayTemp, thangA, namA, pos, ThuTemp, ChiTemp);
 						Thu += ThuTemp;
 						Chi += ChiTemp;
+						if(folder != NULL)
+							delete[] folder;
 					}
 					WCHAR str1[20];
 					swprintf_s(str1, L"%f", Thu);
@@ -601,7 +592,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 							OutputData(hList, (WCHAR*)ngayTemp, (WCHAR*)thangTemp, namA, pos, ThuTemp, ChiTemp);
 							Thu += ThuTemp;
 							Chi += ChiTemp;
+							if(folder1 != NULL)
+								delete[] folder1;
 						}
+						if(folder != NULL)
+							delete[] folder;
 					}
 					WCHAR str1[20];
 					swprintf_s(str1, L"%f", Thu);
@@ -625,6 +620,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						break;
 				}
 				fileA.close();
+				if (ngayA != NULL)
+					delete[] ngayA;
+				if(thangA!=NULL)
+					delete[] thangA;
+				if(namA!=NULL)
+					delete[] namA;
 				break;
 			}
 			case IDC_BUTTON_INPUT_THU:
@@ -680,6 +681,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				SendMessage(cmbChoice_Loai, (UINT)CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
 				SendMessage(hWnd, WM_COMMAND, (WPARAM)IDC_BUTTON_INPUT_XEM, 0);
 				MessageBox(0, L"Thêm dữ liệu thành công!", L"Thông báo", 0);
+				if(ngayB!=NULL)
+					delete[] ngayB;
+				if(thangB!=NULL)
+					delete[] thangB;
+				if(namB!=NULL)
+					delete[] namB;
+				if(content_SoTienThu != NULL)
+					delete[] content_SoTienThu;
 				break;
 			}
             case IDM_ABOUT:
